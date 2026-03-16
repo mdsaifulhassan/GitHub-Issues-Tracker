@@ -8,40 +8,92 @@
 <!-- Tailwind CSS -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 
+
 </head>
 
-<body class="bg-gray-100">
+<body class="bg-slate-50 text-slate-900 font-sans">
 
-<nav class="bg-white shadow p-4 flex justify-between items-center">
+    <nav class="bg-white border-b border-slate-200 px-8 py-4 flex justify-between items-center sticky top-0 z-40">
+        <div class="flex items-center gap-2">
+            <img src="assets/github-logo.png" class="w-8 h-8" alt="Logo">
+            <h1 class="text-xl font-bold tracking-tight">GitHub Issues Tracker</h1>
+        </div>
 
-<div class="flex items-center gap-3">
+        <div class="flex gap-4 items-center">
+            <div class="relative">
+                <input id="searchInput" type="text" placeholder="Search issues..." 
+                    class="bg-slate-50 border border-slate-200 pl-4 pr-10 py-2 rounded-lg text-sm w-80 focus:ring-2 focus:ring-indigo-500 outline-none transition-all">
+            </div>
+            <button id="searchBtn" class="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2 rounded-lg font-medium text-sm transition-colors">
+                + New Issue
+            </button>
+        </div>
+    </nav>
 
-<img src="assets/github-logo.png" class="w-8">
-
-<h1 class="text-xl font-bold">GitHub Issues Tracker</h1>
+<main class="max-w-7xl mx-auto px-6 py-8">
+        
+        <div class="bg-white p-2 rounded-xl shadow-sm border border-slate-200 inline-flex gap-2 mb-8">
+    <button class="tab px-8 py-2 rounded-lg text-sm font-semibold transition-all" data-status="all">
+        All
+    </button>
+    <button class="tab border border-transparent px-8 py-2 rounded-lg text-sm font-semibold text-slate-500 hover:bg-slate-50 transition-all" data-status="open">
+        Open
+    </button>
+    <button class="tab border border-transparent px-8 py-2 rounded-lg text-sm font-semibold text-slate-500 hover:bg-slate-50 transition-all" data-status="closed">
+        Closed
+    </button>
 </div>
-<div class="flex gap-2">
 
-<input id="searchInput" placeholder="Search issues" class="border p-2 rounded"/>
-<button id="searchBtn" class="bg-indigo-600 text-white px-4 py-2 rounded"> Search </button>
+        <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200 mb-8 flex items-center justify-between">
+            <div class="flex items-center gap-5">
+                <div class="bg-indigo-50 p-3 rounded-full">
+                    <img src="assets/Aperture.png" class="w-8 h-8" alt="Icon">
+                </div>
+                <div>
+                    <h2 class="text-3xl font-bold"><span id="issueCount">0</span> Issues</h2>
+                    <p class="text-slate-500 font-medium">Track and manage your project issues</p>
+                </div>
+            </div>
 
-</div> 
-</nav>
+            <div class="flex items-center gap-8 font-semibold text-sm">
+                <div class="flex items-center gap-2 text-emerald-600 bg-emerald-50 px-4 py-2 rounded-full">
+                    <span class="w-2.5 h-2.5 bg-emerald-500 rounded-full"></span> Open
+                </div>
+                <div class="flex items-center gap-2 text-purple-600 bg-purple-50 px-4 py-2 rounded-full">
+                    <span class="w-2.5 h-2.5 bg-purple-500 rounded-full"></span> Closed
+                </div>
+            </div>
+        </div>
 
-<div class="max-w-6xl mx-auto p-6">
+        <div id="loader" class="hidden flex flex-col items-center justify-center my-20">
+            <div class="w-12 h-12 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
+            <p class="mt-4 text-slate-500 font-medium">Fetching issues...</p>
+        </div>
 
-<div class="flex gap-4 mb-6">
+        <div id="issuesContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            </div>
+    </main>
 
-<button class="tab bg-indigo-600 text-white px-4 py-2 rounded" data-status="all">All </button>
+    <div id="issueModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
+  <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto relative">
+    
+    <!-- Close icon -->
+    <button onclick="closeModal()" 
+            class="absolute top-4 right-4 text-slate-500 hover:text-slate-700 text-2xl font-bold">
+      
+    </button>
 
-<button class="tab border px-4 py-2 rounded" data-status="open">Open</button>
+    <div id="modalContent" class="p-8"></div>
 
-<button class="tab border px-4 py-2 rounded" data-status="closed">Closed</button>
- </div>
-
-<div id="issuesContainer" class="grid md:grid-cols-4 gap-6"></div>
-
+    <div class="border-t p-6 flex justify-end">
+      <button onclick="closeModal()" 
+              class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-6 py-2 rounded-lg font-bold transition-all">
+        Close
+      </button>
+    </div>
+  </div>
 </div>
+
 
 <script src="js/api.js"></script>
 <script src="js/ui.js"></script>
