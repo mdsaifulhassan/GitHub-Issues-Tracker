@@ -1,3 +1,4 @@
+const loader = document.getElementById("loader")
 const container = document.getElementById("issuesContainer");
 const tabs = document.querySelectorAll(".tab");
 async function loadIssues() {
@@ -19,37 +20,30 @@ function updateCounts(issues) {
 }
 
 // Tabs filtering
-tabs.forEach(tab => {
-  tab.addEventListener("click", async () => {
+document.querySelectorAll(".tab").forEach(tab => {
+    tab.addEventListener("click", async () => {
 
-    tabs.forEach(t => {
-      t.classList.remove("bg-indigo-600", "text-white");
-      t.classList.add("text-slate-500", "hover:bg-slate-50");
-    });
+        const status = tab.dataset.status
+        loader.classList.remove("hidden")
+        container.classList.add("hidden")
+        setTimeout(() => {
 
+            let filtered = allIssues
 
-    tab.classList.remove("text-slate-500", "hover:bg-slate-50");
-    tab.classList.add("bg-indigo-600", "text-white");
+            if(status === "open"){
+                filtered = allIssues.filter(i => i.status === "open")
+            }
+            else if(status === "closed"){
+                filtered = allIssues.filter(i => i.status === "closed")
+            }
 
-    const status = tab.dataset.status;
-    const issues = await getIssues();
-    window.allIssues = issues;
+            renderIssues(filtered)
+            loader.classList.add("hidden")
+            container.classList.remove("hidden")
 
-    container.innerHTML = "";
-
-    let filtered = issues;
-    if (status !== "all") {
-      filtered = issues.filter(i => i.status === status);
-    }
-
-    filtered.forEach(i => {
-      container.appendChild(createCard(i));
-    });
-
-  
-    updateCounts(filtered);
-  });
-});
+        }, 250)
+    })
+})
 
 // Search functionality
 document.getElementById("searchBtn")
@@ -65,5 +59,4 @@ document.getElementById("searchBtn")
     updateCounts(issues);
   });
 
-// Initial load
 loadIssues();
